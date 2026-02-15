@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>OmniProtect</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>OmniProtect</h1>
+      <div class="status">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">Active</span>
+      </div>
+    </header>
+    
+    <main>
+      <!-- Section 1: Feature Toggle -->
+      <div class="section">
+        <label for="featureToggle">Enable Protection:</label>
+        <label class="switch">
+          <input type="checkbox" id="featureToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      
+      <!-- Section 2: Color Picker -->
+      <div class="section">
+        <label for="colorPicker">Highlight Color:</label>
+        <input type="color" id="colorPicker" value="#3498db">
+      </div>
+      
+      <!-- Section 3: Action Buttons -->
+      <div class="section">
+        <button id="actionBtn" class="btn-primary">🛡️ Protect Page</button>
+        <button id="optionsBtn" class="btn-secondary">⚙️ Settings</button>
+      </div>
+      
+      <!-- Section 4: Stats -->
+      <div class="section">
+        <h3>📈 Stats</h3>
+        <p>Pages scanned: <span id="pageCount">0</span></p>
+        <p>Threats blocked: <span id="threatCount">0</span></p>
+        <button id="resetBtn" class="btn-small">Reset Stats</button>
+      </div>
+      
+      <!-- ⭐⭐ NEW SECTION: Safety Scanner ⭐⭐ -->
+      <div class="section">
+        <h3>📊 Current Page Safety</h3>
+        <div id="safetyStatus" style="text-align: center; padding: 15px; background: rgba(52, 152, 219, 0.1); border-radius: 8px; margin: 10px 0;">
+          <p style="margin: 0;">Loading safety scan...</p>
+          <div class="spinner" style="margin: 10px auto;"></div>
+        </div>
+        
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+          <button id="scanNowBtn" class="btn-primary" style="flex: 1;">🔍 Scan Now</button>
+          <button id="viewReportBtn" class="btn-secondary" style="flex: 1;">📋 View Report</button>
+        </div>
+        
+        <div id="threatList" style="margin-top: 15px; display: none;">
+          <h4 style="color: #e74c3c; margin-bottom: 8px;">⚠️ Detected Threats:</h4>
+          <div id="threatsContainer" style="max-height: 150px; overflow-y: auto; font-size: 12px;">
+            <!-- Threats will be listed here -->
+          </div>
+        </div>
+      </div>
+      <!-- END NEW SECTION -->
+      
+    </main>
+    
+    <footer>
+      <p>v1.0.0 | 🔒 OmniProtect</p>
+    </footer>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>🚫 Page Blocked by OmniProtect</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f8f9fa;
+    }
+    .warning-box {
+      background: white;
+      border-left: 5px solid #e74c3c;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #e74c3c;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .url {
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 5px;
+      font-family: monospace;
+      word-break: break-all;
+      margin: 15px 0;
+    }
+    .actions {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .back-btn {
+      background: #3498db;
+      color: white;
+    }
+    .proceed-btn {
+      background: #e74c3c;
+      color: white;
+    }
+    .whitelist-btn {
+      background: #2ecc71;
+      color: white;
+    }
+    .reason {
+      background: #ffeaea;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="warning-box">
+    <h1>🚫 Page Blocked</h1>
+    <p><strong>OmniProtect has blocked this page for your safety.</strong></p>
+    
+    <div class="url" id="blockedUrl">Loading...</div>
+    
+    <div class="reason" id="reasonDetails">
+      <strong>Reason:</strong> <span id="reasonText">Loading...</span>
+    </div>
+    
+    <p>This page was identified as potentially dangerous due to security threats.</p>
+    
+    <div class="actions">
+      <button class="back-btn" id="goBack">⬅ Go Back</button>
+      <button class="proceed-btn" id="proceedAnyway">⚠ Proceed Anyway</button>
+      <button class="whitelist-btn" id="whitelistSite">✅ Whitelist This Site</button>
+    </div>
+    
+    <p style="margin-top: 20px; font-size: 12px; color: #666;">
+      Need help? Contact OmniProtect support at support@omniprotect.com
+    </p>
+  </div>
+  
+  <script>
+    // Get blocked URL and reason from URL parameters
+    const params = new URLSearchParams(window.location.search);
+    const blockedUrl = params.get('url') || 'Unknown URL';
+    const reason = params.get('reason') || 'Security threat detected';
+    
+    // Display blocked information
+    document.getElementById('blockedUrl').textContent = decodeURIComponent(blockedUrl);
+    document.getElementById('reasonText').textContent = 
+      JSON.parse(decodeURIComponent(reason)) || 'Security threat detected';
+    
+    // Button actions
+    document.getElementById('goBack').addEventListener('click', () => {
+      window.history.back();
+    });
+    
+    document.getElementById('proceedAnyway').addEventListener('click', () => {
+      window.location.href = decodeURIComponent(blockedUrl);
+    });
+    
+    document.getElementById('whitelistSite').addEventListener('click', async () => {
+      const url = decodeURIComponent(blockedUrl);
+      try {
+        await chrome.runtime.sendMessage({
+          action: 'allowPage',
+          url: url
+        });
+        alert('Site added to whitelist. You can now proceed.');
+        window.location.href = url;
+      } catch (error) {
+        alert('Failed to whitelist site: ' + error.message);
+      }
+    });
+  </script>
+</body>
+</html>
